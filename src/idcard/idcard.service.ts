@@ -1,6 +1,29 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { catchError, firstValueFrom, map } from 'rxjs';
+interface SriResponse {
+  contribuyente: {
+    identificacion: string;
+    denominacion: string | null;
+    tipo: string | null;
+    clase: string;
+    tipoIdentificacion: string;
+    resolucion: string | null;
+    nombreComercial: string;
+    direccionMatriz: string | null;
+    fechaInformacion: number;
+    mensaje: string | null;
+    estado: string | null;
+  };
+  deuda: any | null;
+  impugnacion: any | null;
+  remision: any | null;
+}
+
+export interface PersonResponse extends SriResponse {
+  nombres: string;
+  apellidos: string;
+}
 
 @Injectable()
 export class IdcardService {
@@ -68,7 +91,16 @@ export class IdcardService {
         }),
       );
 
-      return response.data;
+      // Si hay nombreComercial, separamos nombres y apellidos
+      const nameInfo = response.data.contribuyente.nombreComercial
+        ? this.splitFullName(response.data.contribuyente.nombreComercial)
+        : { nombres: '', apellidos: '' };
+
+      return {
+        ...response.data,
+        nombres: nameInfo.nombres,
+        apellidos: nameInfo.apellidos,
+      };
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
@@ -78,5 +110,16 @@ export class IdcardService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  private splitFullName(nombreComercial: string): {
+    nombres: string;
+    apellidos: string;
+  } {
+    const parts = nombreComercial.split(' ');
+    const nombres = parts.slice(-2).join(' ');
+    const apellidos = parts.slice(0, -2).join(' ');
+
+    return { nombres, apellidos };
   }
 }

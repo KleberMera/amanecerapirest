@@ -9,4 +9,10 @@ export class IdcardController {
   async validateIdCard(@Param('cedula') cedula: string) {
     return this.idcardService.validateIdCard(cedula);
   }
+
+
+  @Get('person/:cedula')
+  async getPersonData(@Param('cedula') cedula: string) {
+    return this.idcardService.getPersonData(cedula);
+  }
 }

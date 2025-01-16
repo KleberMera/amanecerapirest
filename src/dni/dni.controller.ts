@@ -1,18 +1,19 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { IdcardService } from './idcard.service';
+import { DniService } from './dni.service';
 
-@Controller('idcard')
+
+@Controller('dni')
 export class IdcardController {
-  constructor(private readonly idcardService: IdcardService) {}
+  constructor(private readonly _dniService: DniService) {}
 
   @Get('validate/:cedula')
   async validateIdCard(@Param('cedula') cedula: string) {
-    return this.idcardService.validateIdCard(cedula);
+    return this._dniService.validateIdCard(cedula);
   }
 
 
   @Get('person/:cedula')
   async getPersonData(@Param('cedula') cedula: string) {
-    return this.idcardService.getPersonData(cedula);
+    return this._dniService.getPersonData(cedula);
   }
 }

@@ -1,32 +1,9 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { catchError, firstValueFrom, map } from 'rxjs';
-interface SriResponse {
-  contribuyente: {
-    identificacion: string;
-    denominacion: string | null;
-    tipo: string | null;
-    clase: string;
-    tipoIdentificacion: string;
-    resolucion: string | null;
-    nombreComercial: string;
-    direccionMatriz: string | null;
-    fechaInformacion: number;
-    mensaje: string | null;
-    estado: string | null;
-  };
-  deuda: any | null;
-  impugnacion: any | null;
-  remision: any | null;
-}
-
-export interface PersonResponse extends SriResponse {
-  nombres: string;
-  apellidos: string;
-}
 
 @Injectable()
-export class IdcardService {
+export class DniService {
   private readonly SRI_API_URL =
     'https://srienlinea.sri.gob.ec/sri-registro-civil-servicio-internet/rest/DatosRegistroCivil';
   private readonly SRI_API_URL_DNI =

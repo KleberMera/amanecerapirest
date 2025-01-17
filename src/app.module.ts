@@ -3,9 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DniModule } from './dni/dni.module';
 
+import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [DniModule],
+  imports: [PrismaModule, DniModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

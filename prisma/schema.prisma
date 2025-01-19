@@ -13,28 +13,78 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Role {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  users       User[]
+model Rol {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  usuarios    Usuario[]
 }
 
-model User {
-  id          Int      @id @default(autoincrement())
-  rol_id      Int
-  role        Role     @relation(fields: [rol_id], references: [id])
-  name        String?
-  last_name   String?
-  username    String?  @unique
-  user        String?  @unique
-  email       String?  @unique
-  password    String?
-  phone       String?
-  firebaseUid String?  @unique
-  status      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Usuario {
+  id               Int                      @id @default(autoincrement())
+  rol_id           Int
+  rol              Rol                      @relation(fields: [rol_id], references: [id])
+  nombre           String?
+  apellido         String?
+  nombreComercial  String?                  @unique
+  username         String?                  @unique
+  email            String?                  @unique
+  password            String?
+  telefono         String?
+  firebaseUid      String?                  @unique
+  estado           Boolean                  @default(true)
+  createdAt        DateTime                 @default(now())
+  updatedAt        DateTime                 @updatedAt
+  accion_acumulada Acccion_acumulada[]
+  accion_comprada  Accion_comprada[]
+  total_usuario    Total_Acciones_Usuario[]
+}
+
+model Acccion_acumulada {
+  id              Int      @id @default(autoincrement())
+  id_usuario      Int
+  usuario         Usuario  @relation(fields: [id_usuario], references: [id])
+  total_acumlado  Int
+  mes_acumulado   String
+  fecha_acumulado DateTime
+  estado          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Accion_comprada {
+  id             Int              @id @default(autoincrement())
+  id_usuario     Int
+  usuario        Usuario          @relation(fields: [id_usuario], references: [id])
+  accion         Int
+  fecha          DateTime
+  mes            String
+  estado         Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  interes_ganado Interes_ganado[]
+}
+
+model Interes_ganado {
+  id                 Int             @id @default(autoincrement())
+  id_accion_comprada Int
+  accion_comprada    Accion_comprada @relation(fields: [id_accion_comprada], references: [id])
+  interes_generado   Decimal
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+model Total_Acciones_Usuario {
+  id                   Int      @id @default(autoincrement())
+  id_usuario           Int
+  usuario              Usuario  @relation(fields: [id_usuario], references: [id])
+  total_acumulado      Int
+  total_comprada       Int
+  total_interes_ganado Int
+  fecha                DateTime
+  estado               Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }

@@ -6,13 +6,13 @@ async function main() {
   console.log('Seeding roles...');
 
   const roles = [
-    { id: 1, name: 'Admin', description: 'Rol con permisos administrativos' },
-    { id: 2, name: 'User', description: 'Rol básico para usuarios' },
-    { id: 3, name: 'Moderator', description: 'Rol con permisos de moderación' },
+    { id: 1, nombre: 'Admin', descripcion: 'Rol con permisos administrativos' },
+    { id: 2, nombre: 'User', descripcion: 'Rol básico para usuarios' },
+    { id: 3, nombre: 'Moderator', descripcion: 'Rol con permisos de moderación' },
   ];
 
   for (const role of roles) {
-    await prisma.role.upsert({
+    await prisma.rol.upsert({
       where: { id: role.id },
       update: {}, // Si ya existe, no lo modifica
       create: role, // Si no existe, lo crea

@@ -1,12 +1,12 @@
 export interface UserDTO {
     rol_id: number;
-    name: string;
-    last_name: string;
+    nombre: string;
+    apellido: string;
+    nombreComercial: string;
     username: string;
-    user: string;
     email: string;
     password: string;
-    phone: string;
+    telefono: string;
     firebaseUid: string;
-    status: boolean;
+    estado: boolean;
   }

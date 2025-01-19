@@ -19,9 +19,9 @@ export class AuthService {
 
   async login(user: UserDTO) {
     try {
-      const userData = await this.prismaService.user.findUnique({
+      const userData = await this.prismaService.usuario.findUnique({
         where: {
-          user: user.user,
+           username: user.username,
         },
       });
 
@@ -59,10 +59,9 @@ export class AuthService {
 
   async signUp(user: UserDTO) {
     try {
-      const existingUser = await this.prismaService.user.findFirst({
+      const existingUser = await this.prismaService.usuario.findFirst({
         where: {
           OR: [
-            { user: user.user },
             { username: user.username },
             { email: user.email },
           ],
@@ -73,7 +72,7 @@ export class AuthService {
 
       const hashedPassword = await encrypt(user.password);
 
-      const newUser = await this.prismaService.user.create({
+      const newUser = await this.prismaService.usuario.create({
         data: {
           ...user,
           password: hashedPassword,
@@ -98,7 +97,7 @@ export class AuthService {
 
   // Obtener todos los usuarios
   async getUser() {
-    const users = await this.prismaService.user.findMany();
+    const users = await this.prismaService.usuario.findMany();
     return {
       message: 'Usuarios obtenidos con éxito',
       data: users,
@@ -107,7 +106,7 @@ export class AuthService {
 
   // Obtener un usuario por ID
   async getUserById(id: number) {
-    const user = await this.prismaService.user.findUnique({
+    const user = await this.prismaService.usuario.findUnique({
       where: { id },
     });
     if (!user) {

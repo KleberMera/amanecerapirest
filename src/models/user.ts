@@ -1,5 +1,5 @@
 export interface UserDTO {
-    rol_id: number;
+    rolId: number;
     nombre: string;
     apellido: string;
     nombreComercial: string;

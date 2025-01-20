@@ -12,7 +12,7 @@ CREATE TABLE "Rol" (
 -- CreateTable
 CREATE TABLE "Usuario" (
     "id" SERIAL NOT NULL,
-    "rol_id" INTEGER NOT NULL,
+    "rolId" INTEGER NOT NULL,
     "nombre" TEXT,
     "apellido" TEXT,
     "nombreComercial" TEXT,
@@ -29,57 +29,57 @@ CREATE TABLE "Usuario" (
 );
 
 -- CreateTable
-CREATE TABLE "Acccion_acumulada" (
+CREATE TABLE "AccionAcumulada" (
     "id" SERIAL NOT NULL,
-    "id_usuario" INTEGER NOT NULL,
-    "total_acumlado" INTEGER NOT NULL,
-    "mes_acumulado" TEXT NOT NULL,
-    "fecha_acumulado" TIMESTAMP(3) NOT NULL,
+    "usuarioId" INTEGER NOT NULL,
+    "totalAcumulado" INTEGER NOT NULL,
+    "mesAcumulado" TEXT NOT NULL,
+    "fechaAcumulado" TIMESTAMP(3) NOT NULL,
     "estado" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Acccion_acumulada_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "AccionAcumulada_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Accion_comprada" (
+CREATE TABLE "AccionComprada" (
     "id" SERIAL NOT NULL,
-    "id_usuario" INTEGER NOT NULL,
-    "accion" INTEGER NOT NULL,
-    "fecha" TIMESTAMP(3) NOT NULL,
-    "mes" TEXT NOT NULL,
+    "usuarioId" INTEGER NOT NULL,
+    "cantidad" INTEGER NOT NULL,
+    "fechaCompra" TIMESTAMP(3) NOT NULL,
+    "mesCompra" TEXT NOT NULL,
     "estado" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Accion_comprada_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "AccionComprada_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Interes_ganado" (
+CREATE TABLE "InteresGanado" (
     "id" SERIAL NOT NULL,
-    "id_accion_comprada" INTEGER NOT NULL,
-    "interes_generado" DECIMAL(65,30) NOT NULL,
+    "accionCompradaId" INTEGER NOT NULL,
+    "interesGenerado" DECIMAL(65,30) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Interes_ganado_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "InteresGanado_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Total_Acciones_Usuario" (
+CREATE TABLE "ResumenAccionesUsuario" (
     "id" SERIAL NOT NULL,
-    "id_usuario" INTEGER NOT NULL,
-    "total_acumulado" INTEGER NOT NULL,
-    "total_comprada" INTEGER NOT NULL,
-    "total_interes_ganado" INTEGER NOT NULL,
-    "fecha" TIMESTAMP(3) NOT NULL,
+    "usuarioId" INTEGER NOT NULL,
+    "totalAcumulado" INTEGER NOT NULL,
+    "totalComprado" INTEGER NOT NULL,
+    "totalInteresGanado" DECIMAL(65,30) NOT NULL,
+    "fechaResumen" TIMESTAMP(3) NOT NULL,
     "estado" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Total_Acciones_Usuario_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ResumenAccionesUsuario_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -95,16 +95,16 @@ CREATE UNIQUE INDEX "Usuario_email_key" ON "Usuario"("email");
 CREATE UNIQUE INDEX "Usuario_firebaseUid_key" ON "Usuario"("firebaseUid");
 
 -- AddForeignKey
-ALTER TABLE "Usuario" ADD CONSTRAINT "Usuario_rol_id_fkey" FOREIGN KEY ("rol_id") REFERENCES "Rol"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Usuario" ADD CONSTRAINT "Usuario_rolId_fkey" FOREIGN KEY ("rolId") REFERENCES "Rol"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Acccion_acumulada" ADD CONSTRAINT "Acccion_acumulada_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AccionAcumulada" ADD CONSTRAINT "AccionAcumulada_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Accion_comprada" ADD CONSTRAINT "Accion_comprada_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "AccionComprada" ADD CONSTRAINT "AccionComprada_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Interes_ganado" ADD CONSTRAINT "Interes_ganado_id_accion_comprada_fkey" FOREIGN KEY ("id_accion_comprada") REFERENCES "Accion_comprada"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "InteresGanado" ADD CONSTRAINT "InteresGanado_accionCompradaId_fkey" FOREIGN KEY ("accionCompradaId") REFERENCES "AccionComprada"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Total_Acciones_Usuario" ADD CONSTRAINT "Total_Acciones_Usuario_id_usuario_fkey" FOREIGN KEY ("id_usuario") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ResumenAccionesUsuario" ADD CONSTRAINT "ResumenAccionesUsuario_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

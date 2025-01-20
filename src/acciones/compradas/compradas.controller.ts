@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   HttpStatus,
   Param,
   ParseIntPipe,
@@ -95,20 +96,6 @@ export class CompradasController {
     return this.compradasService.findByUsuario(usuarioId);
   }
 
-  @Get('total-mes/:usuarioId/:mes')
-  async getTotalCompradoPorMes(
-    @Param('usuarioId', ParseIntPipe) usuarioId: number,
-    @Param('mes') mes: string,
-  ): Promise<StandardResponse<number>> {
-    return this.compradasService.getTotalCompradoPorMes(usuarioId, mes);
-  }
-
-
-
-  @Get('intereses/:id')
-  async getTotalInteresesPorAccion(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<StandardResponse<number>> {
-    return this.compradasService.getTotalInteresesPorAccion(id);
-  }
+  
+  
 }

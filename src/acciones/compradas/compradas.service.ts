@@ -50,7 +50,6 @@ export class CompradasService {
         where,
         orderBy,
         include: {
-          usuario: true,
           interesesGanados: true
         },
       });
@@ -205,59 +204,14 @@ export class CompradasService {
     }
   }
 
-  async getTotalCompradoPorMes(usuarioId: number, mes: string): Promise<StandardResponse<number>> {
-    try {
-      const resultado = await this.prismaService.accionComprada.aggregate({
-        where: {
-          usuarioId,
-          mesCompra: mes,
-          estado: true,
-        },
-        _sum: {
-          cantidad: true,
-        },
-      });
 
-      return {
-        message: 'Total de acciones compradas calculado exitosamente',
-        data: resultado._sum.cantidad || 0,
-        status: HttpStatus.OK
-      };
-    } catch (error) {
-      this.logger.error(`Error al calcular total comprado: ${error.message}`);
-      return {
-        message: `Error al calcular el total de acciones compradas: ${error.message}`,
-        data: 0,
-        status: HttpStatus.INTERNAL_SERVER_ERROR
-      };
-    }
-  }
+  
 
- 
 
-  async getTotalInteresesPorAccion(id: number): Promise<StandardResponse<number>> {
-    try {
-      const intereses = await this.prismaService.interesGanado.aggregate({
-        where: {
-          accionCompradaId: id
-        },
-        _sum: {
-          interesGenerado: true
-        }
-      });
 
-      return {
-        message: 'Total de intereses calculado exitosamente',
-        data: Number(intereses._sum.interesGenerado) || 0,
-        status: HttpStatus.OK
-      };
-    } catch (error) {
-      this.logger.error(`Error al calcular total de intereses: ${error.message}`);
-      return {
-        message: `Error al calcular el total de intereses: ${error.message}`,
-        data: 0,
-        status: HttpStatus.INTERNAL_SERVER_ERROR
-      };
-    }
-  }
+
+
+
+
+
 }

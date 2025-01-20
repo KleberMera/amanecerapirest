@@ -305,4 +305,56 @@ export class ResumenAccionesService {
       };
     }
   }
+
+
+  async getTotalesPorUsuario(usuarioId: number) {
+    try {
+      // Total de acciones compradas
+      const totalComprado = await this.prismaService.accionComprada.aggregate({
+        where: { 
+          usuarioId, 
+          estado: true 
+        },
+        _sum: { 
+          cantidad: true 
+        }
+      });
+  
+      // Total de acciones acumuladas
+      const totalAcumulado = await this.prismaService.accionAcumulada.aggregate({
+        where: { 
+          usuarioId, 
+          estado: true 
+        },
+        _sum: { 
+          totalAcumulado: true 
+        }
+      });
+  
+      // Total general (suma de compradas + acumuladas)
+      const totalGeneral = (totalComprado._sum.cantidad || 0) + (totalAcumulado._sum.totalAcumulado || 0);
+  
+      return {
+        message: 'Totales calculados exitosamente',
+        data: {
+          totalComprado: totalComprado._sum.cantidad || 0,
+          totalAcumulado: totalAcumulado._sum.totalAcumulado || 0,
+          totalGeneral: totalGeneral
+        },
+        status: HttpStatus.OK
+      };
+  
+    } catch (error) {
+      this.logger.error(`Error al calcular totales del usuario: ${error.message}`);
+      return {
+        message: `Error al calcular los totales: ${error.message}`,
+        data: {
+          totalComprado: 0,
+          totalAcumulado: 0,
+          totalGeneral: 0
+        },
+        status: HttpStatus.INTERNAL_SERVER_ERROR
+      };
+    }
+  }
 }

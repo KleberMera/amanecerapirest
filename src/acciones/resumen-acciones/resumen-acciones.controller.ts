@@ -101,4 +101,14 @@ export class ResumenAccionesController {
     }
     return response;
   }
+
+
+  @Get('total-usuario/:usuarioId')
+  async getTotalesPorUsuario(@Param('usuarioId', ParseIntPipe) usuarioId: number) {
+    const response = await this.resumenAccionesService.getTotalesPorUsuario(usuarioId);
+    if (response.status !== HttpStatus.OK) {
+      throw new HttpException(response.message, response.status);
+    }
+    return response;
+  }
 }

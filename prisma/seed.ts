@@ -27,6 +27,7 @@ async function main() {
     { id: 4, username: 'Lila Mora', password: 'LilaMora', rolId: 2 },
     { id: 5, username: 'MariaSuarez', password: 'MariaSuarez', rolId: 2 },
     { id: 6, username: 'Diomedes Mera', password: 'DiomedesMera', rolId: 2 },
+    { id: 7, username: 'David Rojas', password: 'DavidRojas', rolId: 2 },
   ];
 
   for (const user of users) {
@@ -44,6 +45,7 @@ async function main() {
     { id: 3, usuarioId: 4, totalAcumulado: 67, mesAcumulado: 'Diciembre', fechaAcumulado: new Date('2024-01-12'), estado: true },
     { id: 4, usuarioId: 5, totalAcumulado: 82, mesAcumulado: 'Diciembre', fechaAcumulado: new Date('2024-01-12'), estado: true },
     { id: 5, usuarioId: 6, totalAcumulado: 83, mesAcumulado: 'Diciembre', fechaAcumulado: new Date('2024-01-12'), estado: true },
+    { id: 6, usuarioId: 7, totalAcumulado: 55, mesAcumulado: 'Diciembre', fechaAcumulado: new Date('2024-01-12'), estado: true },
    
   ];
 
@@ -62,6 +64,14 @@ async function main() {
     { id: 3, usuarioId: 4, cantidad: 0, mesCompra: 'Enero', fechaCompra: new Date('2024-01-01'), estado: true },
     { id: 4, usuarioId: 5, cantidad: 1, mesCompra: 'Enero', fechaCompra: new Date('2024-01-01'), estado: true },
     { id: 5, usuarioId: 6, cantidad: 1, mesCompra: 'Enero', fechaCompra: new Date('2024-01-01'), estado: true },
+    { id: 6, usuarioId: 7, cantidad: 0, mesCompra: 'Enero', fechaCompra: new Date('2024-01-01'), estado: true },
+    //Febrero
+    { id: 7, usuarioId: 2, cantidad: 1, mesCompra: 'Febrero', fechaCompra: new Date('2024-02-01'), estado: true },
+    { id: 8, usuarioId: 3, cantidad: 0, mesCompra: 'Febrero', fechaCompra: new Date('2024-02-01'), estado: true },
+    { id: 9, usuarioId: 4, cantidad: 1, mesCompra: 'Febrero', fechaCompra: new Date('2024-02-01'), estado: true },
+    { id: 10, usuarioId: 5, cantidad: 1, mesCompra: 'Febrero', fechaCompra: new Date('2024-02-01'), estado: true },
+    { id: 11, usuarioId: 6, cantidad: 1, mesCompra: 'Febrero', fechaCompra: new Date('2024-02-01'), estado: true },
+    { id: 12, usuarioId: 7, cantidad: 0, mesCompra: 'Febrero', fechaCompra: new Date('2024-02-01'), estado: true },
     
 
    
@@ -82,6 +92,15 @@ async function main() {
     { id: 3, accionCompradaId: 3, interesGenerado: 14.54 },
     { id: 4, accionCompradaId: 4, interesGenerado: 17.79 },
     { id: 5, accionCompradaId: 5, interesGenerado: 18.01 },
+    { id: 6, accionCompradaId: 6, interesGenerado: 11.94 },
+
+    //Febrero
+    { id: 7, accionCompradaId: 7, interesGenerado: 8.60 },
+    { id: 8, accionCompradaId: 8, interesGenerado: 14.80 },
+    { id: 9, accionCompradaId: 9, interesGenerado: 13.40 },
+    { id: 10, accionCompradaId: 10, interesGenerado: 16.60 },
+    { id: 11, accionCompradaId: 11, interesGenerado: 16.80 },
+    { id: 12, accionCompradaId: 12, interesGenerado: 11.00 },
    
   ];
 

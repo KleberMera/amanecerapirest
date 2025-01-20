@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -29,6 +29,13 @@ async function main() {
     { id: 6, username: 'Diomedes Mera', password: 'DiomedesMera', rolId: 2 },
   ];
 
+  for (const user of users) {
+    await prisma.usuario.upsert({
+      where: { id: user.id },
+      update: {}, // Si ya existe, no lo modifica
+      create: user, // Si no existe, lo crea
+    });
+  }
 
 
   const acumuladas = [
@@ -48,16 +55,56 @@ async function main() {
     });
   }
 
-  for (const user of users) {
-    await prisma.usuario.upsert({
-      where: { id: user.id },
+ 
+  const compradas = [
+    { id: 1, usuarioId: 2, cantidad: 1, mesCompra: 'Enero', fechaCompra: new Date('2024-01-01'), estado: true },
+    { id: 2, usuarioId: 3, cantidad: 0, mesCompra: 'Enero', fechaCompra: new Date('2024-01-01'), estado: true },
+    { id: 3, usuarioId: 4, cantidad: 0, mesCompra: 'Enero', fechaCompra: new Date('2024-01-01'), estado: true },
+    { id: 4, usuarioId: 5, cantidad: 1, mesCompra: 'Enero', fechaCompra: new Date('2024-01-01'), estado: true },
+    { id: 5, usuarioId: 6, cantidad: 1, mesCompra: 'Enero', fechaCompra: new Date('2024-01-01'), estado: true },
+    
+
+   
+  ];
+
+  for (const comprada of compradas) {
+    await prisma.accionComprada.upsert({
+      where: { id: comprada.id },
       update: {}, // Si ya existe, no lo modifica
-      create: user, // Si no existe, lo crea
+      create: comprada
     });
   }
 
+
+  const intereses = [
+    { id: 1, accionCompradaId: 1, interesGenerado: 9.12 },
+    { id: 2, accionCompradaId: 2, interesGenerado: 16.06 },
+    { id: 3, accionCompradaId: 3, interesGenerado: 14.54 },
+    { id: 4, accionCompradaId: 4, interesGenerado: 17.79 },
+    { id: 5, accionCompradaId: 5, interesGenerado: 18.01 },
+   
+  ];
+
+  for (const interes of intereses) {
+    await prisma.interesGanado.upsert({
+      where: { id: interes.id },
+      update: {}, // Si ya existe, no lo modifica
+      create: interes
+    });
+  }
+ 
+
   console.log('Roles seed completed!');
-}
+
+  }
+
+ 
+
+
+
+  
+
+
 
 main()
   .then(async () => {

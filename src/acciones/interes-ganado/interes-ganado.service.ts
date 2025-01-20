@@ -16,7 +16,7 @@ export class InteresGanadoService {
 
   async create(
     data: Prisma.InteresGanadoCreateInput,
-  ): Promise<StandardResponse<InteresGanado>> {
+  ) {
     try {
       const result = await this.prismaService.interesGanado.create({
         data,
@@ -45,7 +45,7 @@ export class InteresGanadoService {
     take?: number;
     where?: Prisma.InteresGanadoWhereInput;
     orderBy?: Prisma.InteresGanadoOrderByWithRelationInput;
-  }): Promise<StandardResponse<InteresGanado[]>> {
+  }) {
     try {
       const { skip, take, where, orderBy } = params || {};
       const result = await this.prismaService.interesGanado.findMany({
@@ -75,7 +75,7 @@ export class InteresGanadoService {
     }
   }
 
-  async findOne(id: number): Promise<StandardResponse<InteresGanado>> {
+  async findOne(id: number) {
     try {
       const result = await this.prismaService.interesGanado.findUnique({
         where: { id },
@@ -110,7 +110,7 @@ export class InteresGanadoService {
   async update(
     id: number,
     data: Prisma.InteresGanadoUpdateInput,
-  ): Promise<StandardResponse<InteresGanado>> {
+  ) {
     try {
       const result = await this.prismaService.interesGanado.update({
         where: { id },
@@ -135,7 +135,7 @@ export class InteresGanadoService {
     }
   }
 
-  async softDelete(id: number): Promise<StandardResponse<InteresGanado>> {
+  async softDelete(id: number) {
     try {
       const result = await this.prismaService.interesGanado.update({
         where: { id },
@@ -162,7 +162,7 @@ export class InteresGanadoService {
     }
   }
 
-  async remove(id: number): Promise<StandardResponse<InteresGanado>> {
+  async remove(id: number) {
     try {
       const result = await this.prismaService.interesGanado.delete({
         where: { id },
@@ -183,65 +183,68 @@ export class InteresGanadoService {
     }
   }
 
-  async findByAccionComprada(
-    accionCompradaId: number,
-  ): Promise<StandardResponse<InteresGanado[]>> {
+  async findByUsuario(usuarioId: number) {
     try {
       const result = await this.prismaService.interesGanado.findMany({
         where: {
-          accionCompradaId,
+          accionComprada: {
+            usuarioId,
+          },
           estado: true,
         },
         include: {
-          accionComprada: true,
+          accionComprada: {
+           
+          },
         },
         orderBy: {
           createdAt: 'desc',
         },
       });
-
+  
       return {
-        message: 'Intereses de la acción comprada recuperados exitosamente',
+        message: 'Intereses del usuario recuperados exitosamente',
         data: result,
         status: HttpStatus.OK,
       };
     } catch (error) {
       this.logger.error(
-        `Error al recuperar intereses de la acción: ${error.message}`,
+        `Error al recuperar intereses del usuario: ${error.message}`,
       );
       return {
-        message: `Error al recuperar los intereses de la acción: ${error.message}`,
+        message: `Error al recuperar los intereses del usuario: ${error.message}`,
         data: [],
         status: HttpStatus.INTERNAL_SERVER_ERROR,
       };
     }
   }
-
-  async getTotalIntereses(
-    accionCompradaId: number,
-  ): Promise<StandardResponse<number>> {
+  
+  async getTotalInteresesByUsuario(usuarioId: number) {
     try {
       const resultado = await this.prismaService.interesGanado.aggregate({
         where: {
-          accionCompradaId,
+          accionComprada: {
+            usuarioId,
+            
+          },
           estado: true,
         },
         _sum: {
           interesGenerado: true,
         },
       });
-
+  
       return {
-        message: 'Total de intereses calculado exitosamente',
+        message: 'Total de intereses del usuario calculado exitosamente',
         data: Number(resultado._sum.interesGenerado) || 0,
         status: HttpStatus.OK,
       };
     } catch (error) {
       this.logger.error(
-        `Error al calcular total de intereses: ${error.message}`,
+        `Error al calcular total de intereses del usuario: ${error.message}`,
       );
       return {
-        message: `Error al calcular el total de intereses: ${error.message}`,
+        message: `Error al calcular el total de intereses del usuario: ${error.message}`,
         data: 0,
         status: HttpStatus.INTERNAL_SERVER_ERROR,
       };

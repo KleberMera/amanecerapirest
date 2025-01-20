@@ -61,6 +61,7 @@ CREATE TABLE "InteresGanado" (
     "id" SERIAL NOT NULL,
     "accionCompradaId" INTEGER NOT NULL,
     "interesGenerado" DECIMAL(65,30) NOT NULL,
+    "estado" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

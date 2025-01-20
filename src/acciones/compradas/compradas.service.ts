@@ -186,7 +186,6 @@ export class CompradasService {
           estado: true,
         },
         include: {
-          usuario: true,
           interesesGanados: true
         },
       });
@@ -234,44 +233,7 @@ export class CompradasService {
     }
   }
 
-  async getResumenPorPeriodo(
-    startDate: Date,
-    endDate: Date,
-    usuarioId?: number,
-  ): Promise<StandardResponse<AccionComprada[]>> {
-    try {
-      const result = await this.prismaService.accionComprada.findMany({
-        where: {
-          fechaCompra: {
-            gte: startDate,
-            lte: endDate,
-          },
-          ...(usuarioId && { usuarioId }),
-          estado: true,
-        },
-        include: {
-          usuario: true,
-          interesesGanados: true
-        },
-        orderBy: {
-          fechaCompra: 'desc',
-        },
-      });
-
-      return {
-        message: 'Resumen de acciones compradas recuperado exitosamente',
-        data: result,
-        status: HttpStatus.OK
-      };
-    } catch (error) {
-      this.logger.error(`Error al recuperar resumen por período: ${error.message}`);
-      return {
-        message: `Error al recuperar el resumen de acciones compradas: ${error.message}`,
-        data: [],
-        status: HttpStatus.INTERNAL_SERVER_ERROR
-      };
-    }
-  }
+ 
 
   async getTotalInteresesPorAccion(id: number): Promise<StandardResponse<number>> {
     try {

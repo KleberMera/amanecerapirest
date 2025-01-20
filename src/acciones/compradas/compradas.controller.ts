@@ -103,18 +103,7 @@ export class CompradasController {
     return this.compradasService.getTotalCompradoPorMes(usuarioId, mes);
   }
 
-  @Get('resumen/periodo')
-  async getResumenPorPeriodo(
-    @Query('startDate') startDate: string,
-    @Query('endDate') endDate: string,
-    @Query('usuarioId') usuarioId?: string,
-  ): Promise<StandardResponse<AccionComprada[]>> {
-    return this.compradasService.getResumenPorPeriodo(
-      new Date(startDate),
-      new Date(endDate),
-      usuarioId ? Number(usuarioId) : undefined,
-    );
-  }
+
 
   @Get('intereses/:id')
   async getTotalInteresesPorAccion(

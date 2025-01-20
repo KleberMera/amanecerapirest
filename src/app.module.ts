@@ -9,9 +9,10 @@ import { AcumuladaModule } from './acciones/acumulada/acumulada.module';
 import { CompradasModule } from './acciones/compradas/compradas.module';
 import { InteresGanadoModule } from './acciones/interes-ganado/interes-ganado.module';
 import { ResumenAccionesModule } from './acciones/resumen-acciones/resumen-acciones.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
 
 @Module({
-  imports: [PrismaModule, DniModule, AuthModule, AcumuladaModule, CompradasModule, InteresGanadoModule, ResumenAccionesModule],
+  imports: [PrismaModule, DniModule, AuthModule, AcumuladaModule, CompradasModule, InteresGanadoModule, ResumenAccionesModule, UsuariosModule],
   controllers: [AppController],
   providers: [AppService],
 })

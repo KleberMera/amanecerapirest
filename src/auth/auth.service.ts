@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
+import { log } from 'console';
 import { encrypt } from 'src/libs/bcrypt';
 import { UserDTO } from 'src/models/user';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -18,6 +19,7 @@ export class AuthService {
   ) {}
 
   async login(user: UserDTO) {
+    log(user);
     try {
       const userData = await this.prismaService.usuario.findUnique({
         where: {

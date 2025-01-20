@@ -25,7 +25,7 @@ export class AuthController {
     return this.authService.signUp(user);
   }
 
-  @Get('user')
+  @Get('usuario')
   getUser() {
     return this.authService.getUser();
   }

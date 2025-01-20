@@ -2,91 +2,117 @@ import {
   Controller,
   Get,
   Post,
-  Patch,
   Delete,
   Param,
   Body,
   HttpStatus,
-  HttpException,
+  Query,
+  ParseIntPipe,
+  Put,
 } from '@nestjs/common';
 import { AcumuladaService } from './acumulada.service';
+import { AccionAcumulada, Prisma } from '@prisma/client';
 
-// Interfaz para los datos de crear o actualizar
-interface AccionAcumuladaDto {
-  usuarioId: number;
-  totalAcumulado: number;
-  mesAcumulado: string;
-  fechaAcumulado: Date;
-  activo?: boolean;
+interface StandardResponse<T> {
+  message: string;
+  data: T;
+  status: HttpStatus;
 }
 
 @Controller('acumulada')
 export class AcumuladaController {
   constructor(private readonly acumuladaService: AcumuladaService) {}
 
-  // Crear una nueva acción acumulada
   @Post()
-  async crearAccionAcumulada(@Body() data: AccionAcumuladaDto) {
-    const response = await this.acumuladaService.crearAccionAcumulada(data);
-    if (response.status === 'error') {
-      throw new HttpException(response.message, HttpStatus.BAD_REQUEST);
-    }
-    return response;
+  async create(
+    @Body() data: Prisma.AccionAcumuladaCreateInput,
+  ): Promise<StandardResponse<AccionAcumulada>> {
+    return this.acumuladaService.create(data);
   }
 
-  // Obtener todas las acciones acumuladas
   @Get()
-  async obtenerAccionesAcumuladas() {
-    const response = await this.acumuladaService.obtenerAccionesAcumuladas();
-    if (response.status === 'error') {
-      throw new HttpException(response.message, HttpStatus.BAD_REQUEST);
-    }
-    return response;
+  async findAll(
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+    @Query('usuarioId') usuarioId?: number,
+    @Query('estado') estado?: boolean,
+    @Query('mesAcumulado') mesAcumulado?: string,
+    @Query('orderBy') orderBy?: 'asc' | 'desc'
+  ): Promise<StandardResponse<AccionAcumulada[]>> {
+    const where: Prisma.AccionAcumuladaWhereInput = {};
+    
+    // Construimos el objeto where según los parámetros recibidos
+    if (usuarioId) where.usuarioId = usuarioId;
+    if (estado !== undefined) where.estado = estado;
+    if (mesAcumulado) where.mesAcumulado = mesAcumulado;
+  
+    // Construimos el objeto orderBy
+    const orderByObject = orderBy ? {
+      fechaAcumulado: orderBy
+    } : undefined;
+  
+    return this.acumuladaService.findAll({
+      skip: skip ? Number(skip) : undefined,
+      take: take ? Number(take) : undefined,
+      where,
+      orderBy: orderByObject
+    });
   }
 
-  // Obtener una acción acumulada por ID
   @Get(':id')
-  async obtenerAccionAcumuladaPorId(@Param('id') id: number) {
-    const response = await this.acumuladaService.obtenerAccionAcumuladaPorId(
-      Number(id),
-    );
-    if (response.status === 'error') {
-      throw new HttpException(response.message, HttpStatus.NOT_FOUND);
-    }
-    return response;
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<StandardResponse<AccionAcumulada>> {
+    return this.acumuladaService.findOne(id);
   }
 
-  // Actualizar una acción acumulada por ID
-  @Patch(':id')
-  async actualizarAccionAcumulada(
-    @Param('id') id: number,
-    @Body() data: Partial<AccionAcumuladaDto>,
-  ) {
-    const response = await this.acumuladaService.actualizarAccionAcumulada(
-      Number(id),
-      data,
-    );
-    if (response.status === 'error') {
-      throw new HttpException(response.message, HttpStatus.BAD_REQUEST);
-    }
-    return response;
+  @Put(':id')
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: Prisma.AccionAcumuladaUpdateInput,
+  ): Promise<StandardResponse<AccionAcumulada>> {
+    return this.acumuladaService.update(id, data);
   }
 
-  // Eliminar una acción acumulada (lógica)
+  @Delete(':id/soft')
+  async softDelete(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<StandardResponse<AccionAcumulada>> {
+    return this.acumuladaService.softDelete(id);
+  }
+
   @Delete(':id')
-  async eliminarAccionAcumulada(@Param('id') id: number) {
-    const response = await this.acumuladaService.eliminarAccionAcumulada(
-      Number(id),
-    );
-    if (response.status === 'error') {
-      throw new HttpException(response.message, HttpStatus.BAD_REQUEST);
-    }
-    return response;
+  async remove(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<StandardResponse<AccionAcumulada>> {
+    return this.acumuladaService.remove(id);
   }
 
   @Get('usuario/:usuarioId')
-  async obtenerAccionesPorUsuario(@Param('usuarioId') usuarioId: number) {
-    
-    return this.acumuladaService.obtenerAccionesAcumuladasPorUsuario(Number(usuarioId));
+  async findByUsuario(
+    @Param('usuarioId', ParseIntPipe) usuarioId: number,
+  ): Promise<StandardResponse<AccionAcumulada[]>> {
+    return this.acumuladaService.findByUsuario(usuarioId);
+  }
+
+  @Get('total-mes/:usuarioId/:mes')
+  async getTotalAcumuladoPorMes(
+    @Param('usuarioId', ParseIntPipe) usuarioId: number,
+    @Param('mes') mes: string,
+  ): Promise<StandardResponse<number>> {
+    return this.acumuladaService.getTotalAcumuladoPorMes(usuarioId, mes);
+  }
+
+  @Get('resumen')
+  async getResumenPorPeriodo(
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
+    @Query('usuarioId') usuarioId?: number,
+  ): Promise<StandardResponse<AccionAcumulada[]>> {
+    return this.acumuladaService.getResumenPorPeriodo(
+      new Date(startDate),
+      new Date(endDate),
+      usuarioId ? Number(usuarioId) : undefined,
+    );
   }
 }

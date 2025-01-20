@@ -72,6 +72,7 @@ model InteresGanado {
   accionCompradaId Int
   accionComprada   AccionComprada @relation(fields: [accionCompradaId], references: [id])
   interesGenerado  Decimal
+  estado           Boolean        @default(true)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 }

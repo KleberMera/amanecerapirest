@@ -21,13 +21,13 @@ async function main() {
 
 
   const users = [
-    { id: 1, username: 'kleber', password: '0928213727', rolId: 1 },
-    { id: 2, username: 'Sandra Galarza', password: 'SandraGalarza', rolId: 2 },
-    { id: 3, username: 'Grecia Rojas', password: 'GreciaRojas', rolId: 2},
-    { id: 4, username: 'Lila Mora', password: 'LilaMora', rolId: 2 },
-    { id: 5, username: 'MariaSuarez', password: 'MariaSuarez', rolId: 2 },
-    { id: 6, username: 'Diomedes Mera', password: 'DiomedesMera', rolId: 2 },
-    { id: 7, username: 'David Rojas', password: 'DavidRojas', rolId: 2 },
+    { id: 1, username: 'kleber', password: '0928213727', rolId: 1, nombre: 'Kleber', apellido: 'Mera', email: 'kleber@gmail.com', nombreComercial: 'Kleber Mera' },
+    { id: 2, username: 'Sandra Galarza', password: 'SandraGalarza', rolId: 2, nombre: 'Sandra', apellido: 'Galarza', email: 'sandra@gmail.com', nombreComercial: 'Sandra Galarza' },
+    { id: 3, username: 'Grecia Rojas', password: 'GreciaRojas', rolId: 2, nombre: 'Grecia', apellido: 'Rojas', email: 'grecia@gmail.com',   nombreComercial: 'Grecia Rojas' },
+    { id: 4, username: 'Lila Mora', password: 'LilaMora', rolId: 2, nombre: 'Lila', apellido: 'Mora', email: 'lila@gmail.com', nombreComercial: 'Lila Mora' },
+    { id: 5, username: 'MariaSuarez', password: 'MariaSuarez', rolId: 2, nombre: 'Maria', apellido: 'Suarez', email: 'maria@gmail.com', nombreComercial: 'Maria Suarez' },
+    { id: 6, username: 'Diomedes Mera', password: 'DiomedesMera', rolId: 2 , nombre: 'Diomedes', apellido: 'Mera', email: 'diomedes@gmail.com', nombreComercial: 'Diomedes Mera' },
+    { id: 7, username: 'David Rojas', password: 'DavidRojas', rolId: 2, nombre: 'David', apellido: 'Rojas', email: 'david@gmail.com', nombreComercial: 'David Rojas' },
   ];
 
   for (const user of users) {

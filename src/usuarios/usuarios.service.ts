@@ -27,29 +27,43 @@ export class UsuariosService {
         take,
         orderBy,
         where: {
-          estado: true
+          estado: true,
         },
         include: {
           rol: true,
           accionesAcumuladas: true,
           accionesCompradas: true,
-          resumenAcciones: true
-        }
+          resumenAcciones: true,
+        },
       });
 
       return {
         message: 'Usuarios recuperados exitosamente',
         data: usuarios,
-        status: HttpStatus.OK
+        status: HttpStatus.OK,
       };
     } catch (error) {
       this.logger.error(`Error al recuperar usuarios: ${error.message}`);
       return {
         message: `Error al recuperar usuarios: ${error.message}`,
         data: [],
-        status: HttpStatus.INTERNAL_SERVER_ERROR
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
       };
     }
+  }
+
+  async findAllUser() {
+    const usuarios = await this.prismaService.usuario.findMany({
+      include: {
+        rol: true,
+      },
+    });
+
+    return {
+      message: 'Usuarios recuperados exitosamente',
+      data: usuarios,
+      status: HttpStatus.OK,
+    };
   }
 
   // Buscar usuarios por nombre o apellido
@@ -61,43 +75,44 @@ export class UsuariosService {
             {
               nombre: {
                 contains: searchTerm,
-                mode: 'insensitive' // Búsqueda case-insensitive
-              }
+                mode: 'insensitive', // Búsqueda case-insensitive
+              },
             },
             {
               apellido: {
                 contains: searchTerm,
-                mode: 'insensitive'
-              }
+                mode: 'insensitive',
+              },
             },
             {
               nombreComercial: {
                 contains: searchTerm,
-                mode: 'insensitive'
-              }
-            }
+                mode: 'insensitive',
+              },
+            },
           ],
           AND: {
-            estado: true
-          }
+            estado: true,
+          },
         },
         include: {
           rol: true,
-          
-        }
+        },
       });
 
       return {
         message: 'Usuarios encontrados exitosamente',
         data: usuarios,
-        status: HttpStatus.OK
+        status: HttpStatus.OK,
       };
     } catch (error) {
-      this.logger.error(`Error al buscar usuarios por nombre: ${error.message}`);
+      this.logger.error(
+        `Error al buscar usuarios por nombre: ${error.message}`,
+      );
       return {
         message: `Error al buscar usuarios: ${error.message}`,
         data: [],
-        status: HttpStatus.INTERNAL_SERVER_ERROR
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
       };
     }
   }
@@ -108,33 +123,32 @@ export class UsuariosService {
       const usuario = await this.prismaService.usuario.findUnique({
         where: {
           id,
-          estado: true
+          estado: true,
         },
         include: {
           rol: true,
-         
-        }
+        },
       });
 
       if (!usuario) {
         return {
           message: 'Usuario no encontrado',
           data: null,
-          status: HttpStatus.NOT_FOUND
+          status: HttpStatus.NOT_FOUND,
         };
       }
 
       return {
         message: 'Usuario encontrado exitosamente',
         data: usuario,
-        status: HttpStatus.OK
+        status: HttpStatus.OK,
       };
     } catch (error) {
       this.logger.error(`Error al buscar usuario por ID: ${error.message}`);
       return {
         message: `Error al buscar usuario: ${error.message}`,
         data: null,
-        status: HttpStatus.INTERNAL_SERVER_ERROR
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
       };
     }
   }
@@ -144,37 +158,39 @@ export class UsuariosService {
     try {
       const usuarios = await this.prismaService.usuario.findMany({
         where: {
-          username: {  // Asumiendo que username se usa para la cédula
+          username: {
+            // Asumiendo que username se usa para la cédula
             contains: cedula,
-            mode: 'insensitive'
+            mode: 'insensitive',
           },
-          estado: true
+          estado: true,
         },
         include: {
           rol: true,
-         
-        }
+        },
       });
 
       if (usuarios.length === 0) {
         return {
           message: 'No se encontraron usuarios con esa cédula',
           data: [],
-          status: HttpStatus.OK
+          status: HttpStatus.OK,
         };
       }
 
       return {
         message: 'Usuarios encontrados exitosamente',
         data: usuarios,
-        status: HttpStatus.OK
+        status: HttpStatus.OK,
       };
     } catch (error) {
-      this.logger.error(`Error al buscar usuarios por cédula: ${error.message}`);
+      this.logger.error(
+        `Error al buscar usuarios por cédula: ${error.message}`,
+      );
       return {
         message: `Error al buscar usuarios: ${error.message}`,
         data: [],
-        status: HttpStatus.INTERNAL_SERVER_ERROR
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
       };
     }
   }
@@ -182,7 +198,7 @@ export class UsuariosService {
   // Método auxiliar para validar si existe un usuario
   async checkIfExists(id: number): Promise<boolean> {
     const usuario = await this.prismaService.usuario.findUnique({
-      where: { id }
+      where: { id },
     });
     return !!usuario;
   }

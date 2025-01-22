@@ -1,4 +1,12 @@
-import { Controller, Get, Query, Param, ParseIntPipe, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Param,
+  ParseIntPipe,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 
 @Controller('usuarios')
@@ -9,15 +17,24 @@ export class UsuariosController {
   async findAll(
     @Query('skip') skip?: string,
     @Query('take') take?: string,
-    @Query('orderBy') orderBy?: string
+    @Query('orderBy') orderBy?: string,
   ) {
     const params: any = {};
-    
+
     if (skip) params.skip = parseInt(skip);
     if (take) params.take = parseInt(take);
     if (orderBy) params.orderBy = JSON.parse(orderBy);
 
     const response = await this.usuariosService.findAll(params);
+    if (response.status !== HttpStatus.OK) {
+      throw new HttpException(response.message, response.status);
+    }
+    return response;
+  }
+
+  @Get('all')
+  async findAllUser() {
+    const response = await this.usuariosService.findAllUser();
     if (response.status !== HttpStatus.OK) {
       throw new HttpException(response.message, response.status);
     }

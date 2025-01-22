@@ -13,6 +13,7 @@ CREATE TABLE "Rol" (
 CREATE TABLE "Usuario" (
     "id" SERIAL NOT NULL,
     "rolId" INTEGER NOT NULL,
+    "cedula" TEXT,
     "nombre" TEXT,
     "apellido" TEXT,
     "nombreComercial" TEXT,
@@ -82,6 +83,9 @@ CREATE TABLE "ResumenAccionesUsuario" (
 
     CONSTRAINT "ResumenAccionesUsuario_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Usuario_cedula_key" ON "Usuario"("cedula");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Usuario_nombreComercial_key" ON "Usuario"("nombreComercial");

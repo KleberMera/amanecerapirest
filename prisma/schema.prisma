@@ -29,6 +29,7 @@ model Usuario {
   id                 Int                      @id @default(autoincrement())
   rolId              Int
   rol                Rol                      @relation(fields: [rolId], references: [id])
+  cedula             String?                  @unique
   nombre             String?
   apellido           String?
   nombreComercial    String?                  @unique
